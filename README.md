@@ -31,4 +31,12 @@
 
 - Webpack 配置文件 webpack.config.js
 
-    * 
+    * loader: 安装依赖包 -> 配置
+    
+    * plugins: 安装依赖包 -> 引入 -> 使用
+
+- 常用的插件
+    
+    |名称|功能|
+    |:-|:-|
+    |html-webpack-html|默认创建一个空的HTML，自动引入打包输出的所有资源（js/css）|
