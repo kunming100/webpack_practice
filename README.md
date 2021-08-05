@@ -39,11 +39,13 @@
                 {
                     // 匹配文件
                     test: /\.ext$/,
+                    // 排除文件
+                    // exclude: /\.(html|css|js)$/
+
                     // 使用loader进行处理
                     // use数组中loader的执行顺序：倒序，依次执行
                     // 使用多个loader时的写法
                     use: ["xxx-loader", "xxx-loader", "xxx-loader"],
-
                     // 使用单个loader的写法
                     // loader: "url-loader",
                 },
