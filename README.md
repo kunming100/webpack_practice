@@ -46,9 +46,29 @@
                     // use数组中loader的执行顺序：倒序，依次执行
                     // 使用多个loader时的写法
                     use: ["xxx-loader", "xxx-loader", "xxx-loader"],
-                    // 使用单个loader的写法
-                    // loader: "url-loader",
                 },
+                {
+                    test: /\.(png|jpg|gif)/,
+                    // 使用单个loader的写法
+                    loader: 'url-loader',
+                    // 其他配置项
+                    options: {
+                        // 图片大小 < 8kb，就会转成 base64 处理，一般是8-12kb以下的使用base64
+                        // 优点：减少请求数量（减轻服务器压力）
+                        // 缺点：图片体积会更大（文件请求速度更慢）
+                        limit: 8 * 1024,
+                        // 问题：因为url-loader默认使用es6模块化解析，而html-loader引入图片资源是commonjs规范
+                        // 导致：html中的img的src会被写成"[object Module]"
+                        // 解决：关闭url-looader的es6模块化，使用commonjs解析
+                        esModule: false,
+                        // 给图片重命名
+                        // [hash:10] 取图片的hash的前10位
+                        // [ext] 取文件原来的拓展名
+                        name: '[hash:10].[ext]',
+                        // 输出的文件夹
+                        outputPath: 'imgs',
+                    }
+                }
             ],
         },
         ```
