@@ -104,16 +104,18 @@
 
 - 常用的loader
 
-    | 名称                    | 功能                                                          | 注意事项                                               |
-    |:------------------------|:------------------------------------------------------------|:-------------------------------------------------------|
-    | less-loader、sass-loader | 解析less、sass编译为 CSS                                       | 依赖less或sass                                         |
-    | css-loader              | 将css文件变成commonjs模块加载到js中，里面的内容是样式字符串    | 在less-loader、sass-loader使用之后                      |
-    | style-loader            | 创建style标签，将js中的样式资源插入进去，添加到head中           | 需要先使用css-loader                                   |
-    | url-loader              | 将项目中的图片资源引用加载到js中                              | 依赖file-loader；存在问题：处理不了html中img图片资源引用 |
-    | html-loader             | 处理html文件的img图片（负责引入img，从而能被url-loader进行处理） |                                                        |
+    | 名称                        | 功能                                                          | 注意事项                                               |
+    |:----------------------------|:------------------------------------------------------------|:-------------------------------------------------------|
+    | less-loader、sass-loader     | 解析less、sass编译为 CSS                                       | 依赖less或sass                                         |
+    | css-loader                  | 将css文件变成commonjs模块加载到js中，里面的内容是样式字符串    | 在less-loader、sass-loader使用之后                      |
+    | style-loader                | 创建style标签，将js中的样式资源插入进去，添加到head中           | 需要先使用css-loader                                   |
+    | url-loader                  | 将项目中的图片资源引用加载到js中                              | 依赖file-loader；存在问题：处理不了html中img图片资源引用 |
+    | html-loader                 | 处理html文件的img图片（负责引入img，从而能被url-loader进行处理） |                                                        |
+    | MiniCssExtractPlugin.loader | 将css从js中抽取出来，存在单独的文件中                          | 需要与css-loader配合使用                               |
 
 - 常用的插件
     
-    | 名称              | 功能                                                    | 注意事项 |
-    |:------------------|:------------------------------------------------------|:---------|
-    | html-webpack-html | 默认创建一个空的HTML，自动引入打包输出的所有资源（js/css） |          |
+    | 名称                    | 功能                                                    | 注意事项                                |
+    |:------------------------|:------------------------------------------------------|:----------------------------------------|
+    | html-webpack-html       | 默认创建一个空的HTML，自动引入打包输出的所有资源（js/css） |                                         |
+    | mini-css-extract-plugin | 将css从js中抽取出来，存在单独的文件中                    | 具有一个loader，需要与css-loader配合使用 |
