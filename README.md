@@ -121,3 +121,4 @@
     |:------------------------|:------------------------------------------------------|:----------------------------------------|
     | html-webpack-html       | 默认创建一个空的HTML，自动引入打包输出的所有资源（js/css） |                                         |
     | mini-css-extract-plugin | 将css从js中抽取出来，存在单独的文件中                    | 具有一个loader，需要与css-loader配合使用 |
+    |optimize-css-assets-webpack-plugin|压缩css|
