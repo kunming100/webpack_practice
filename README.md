@@ -26,7 +26,7 @@
     |development|将 process.env.NODE_ENV 的值设为 development;<br>启用 NamedChunksPlugin 和NamedModulesPlugin。|能让代码本地调试运行的环境
     |production|将 process.env.NODE_ENV 的值设为 production;<br>启用FlagDependencyUsagePlugin, FlagIncludedChunksPlugin, ModuleConcatenationPlugin, NoEmitOnErrorsPlugin, OccurrenceOrderPlugin, SideEffectsFlagPlugin 和 UglifyJsPlugin。|能让代码优化上线运行的环境|
 
-## Webpack 的特点
+## Webpack 的关键知识点
 - Webpack 本身只能处理js/json资源，不能处理css/img等其他资源
 
 - Webpack 配置文件 webpack.config.js
@@ -104,21 +104,50 @@
 
 - 常用的loader
 
-    | 名称                        | 功能                                                                                                          | 注意事项                                               |
-    |:----------------------------|:------------------------------------------------------------------------------------------------------------|:-------------------------------------------------------|
-    | less-loader、sass-loader     | 解析less、sass编译为 CSS                                                                                       | 依赖less或sass                                         |
-    | css-loader                  | 将css文件变成commonjs模块加载到js中，里面的内容是样式字符串                                                    | 在less-loader、sass-loader使用之后                      |
-    | style-loader                | 创建style标签，将js中的样式资源插入进去，添加到head中                                                           | 需要先使用css-loader                                   |
-    | url-loader                  | 将项目中的图片资源引用加载到js中                                                                              | 依赖file-loader；存在问题：处理不了html中img图片资源引用 |
-    | html-loader                 | 处理html文件的img图片（负责引入img，从而能被url-loader进行处理）                                                 |                                                        |
-    | MiniCssExtractPlugin.loader | 将css从js中抽取出来，存在单独的文件中                                                                          | 需要与css-loader配合使用                               |
-    | postcss-loader              | 实现css兼容                                                                                                   |                                                        |
-    | postcss-preset-env          | 能够帮助postcss识别某些环境，从而加载package.json中browserslist里面的配置，能够让兼容性精确到某一个浏览器的版本 | 需要配合postcss-loader使用                             |
+    | 名称                        | 功能                                                                                                          | 注意事项                                                                                    |
+    |:----------------------------|:------------------------------------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------------|
+    | less-loader、sass-loader     | 解析less、sass编译为 CSS                                                                                       | 依赖less或sass                                                                              |
+    | css-loader                  | 将css文件变成commonjs模块加载到js中，里面的内容是样式字符串                                                    | 在less-loader、sass-loader使用之后                                                           |
+    | style-loader                | 创建style标签，将js中的样式资源插入进去，添加到head中                                                           | 需要先使用css-loader                                                                        |
+    | url-loader                  | 将项目中的图片资源引用加载到js中                                                                              | 依赖file-loader；存在问题：处理不了html中img图片资源引用                                      |
+    | html-loader                 | 处理html文件的img图片（负责引入img，从而能被url-loader进行处理）                                                 |                                                                                             |
+    | MiniCssExtractPlugin.loader | 将css从js中抽取出来，存在单独的文件中                                                                          | 需要与css-loader配合使用                                                                    |
+    | postcss-loader              | 实现css兼容                                                                                                   |                                                                                             |
+    | postcss-preset-env          | 能够帮助postcss识别某些环境，从而加载package.json中browserslist里面的配置，能够让兼容性精确到某一个浏览器的版本 | 需要配合postcss-loader使用                                                                  |
+    | eslint-loader               | 配置js的语法限制规则                                                                                          | 1.依赖eslint；2.可以使用airbnb作为规范，依赖eslint-config-airbnb-base或者eslint-config-airbnb |
 
 - 常用的插件
     
-    | 名称                    | 功能                                                    | 注意事项                                |
-    |:------------------------|:------------------------------------------------------|:----------------------------------------|
-    | html-webpack-html       | 默认创建一个空的HTML，自动引入打包输出的所有资源（js/css） |                                         |
-    | mini-css-extract-plugin | 将css从js中抽取出来，存在单独的文件中                    | 具有一个loader，需要与css-loader配合使用 |
-    |optimize-css-assets-webpack-plugin|压缩css|
+    | 名称                               | 功能                                                    | 注意事项                                |
+    |:-----------------------------------|:------------------------------------------------------|:----------------------------------------|
+    | html-webpack-html                  | 默认创建一个空的HTML，自动引入打包输出的所有资源（js/css） |                                         |
+    | mini-css-extract-plugin            | 将css从js中抽取出来，存在单独的文件中                    | 具有一个loader，需要与css-loader配合使用 |
+    | optimize-css-assets-webpack-plugin | 压缩css                                                 |                                         |
+
+- eslint的配置
+
+    使用[airbnb](https://github.com/airbnb/javascript#table-of-contents)作为eslint的规范，依赖eslint-config-airbnb（或eslint-config-airbnb-base）、eslint-plugin-import
+
+    * loader 配置
+        ```js
+        module: {
+            rules: [
+                {
+                    test: /\.js$/,
+                    exclude: /node_modules/,
+                    loader: "eslint-loader",
+                    options: {
+                        // 自动修复eslint的错误
+                        fix: true,
+                    },
+                }
+            ]
+        }
+        ```
+
+    * package.json 配置
+        ```json
+        "eslintConfig": {
+            "extends": "airbnb-base"
+        }
+        ```
