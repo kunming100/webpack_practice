@@ -104,17 +104,18 @@
 
 - 常用的loader
 
-    | 名称                        | 功能                                                                                                          | 注意事项                                                                                    |
-    |:----------------------------|:------------------------------------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------------|
-    | less-loader、sass-loader     | 解析less、sass编译为 CSS                                                                                       | 依赖less或sass                                                                              |
-    | css-loader                  | 将css文件变成commonjs模块加载到js中，里面的内容是样式字符串                                                    | 在less-loader、sass-loader使用之后                                                           |
-    | style-loader                | 创建style标签，将js中的样式资源插入进去，添加到head中                                                           | 需要先使用css-loader                                                                        |
-    | url-loader                  | 将项目中的图片资源引用加载到js中                                                                              | 依赖file-loader；存在问题：处理不了html中img图片资源引用                                      |
-    | html-loader                 | 处理html文件的img图片（负责引入img，从而能被url-loader进行处理）                                                 |                                                                                             |
-    | MiniCssExtractPlugin.loader | 将css从js中抽取出来，存在单独的文件中                                                                          | 需要与css-loader配合使用                                                                    |
-    | postcss-loader              | 实现css兼容                                                                                                   |                                                                                             |
-    | postcss-preset-env          | 能够帮助postcss识别某些环境，从而加载package.json中browserslist里面的配置，能够让兼容性精确到某一个浏览器的版本 | 需要配合postcss-loader使用                                                                  |
-    | eslint-loader               | 配置js的语法限制规则                                                                                          | 1.依赖eslint；2.可以使用airbnb作为规范，依赖eslint-config-airbnb-base或者eslint-config-airbnb |
+    | 名称                        | 功能                                                                                                          | 注意事项                                                                                                                                                     |
+    |:----------------------------|:------------------------------------------------------------------------------------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------|
+    | less-loader、sass-loader     | 解析less、sass编译为 CSS                                                                                       | 依赖less或sass                                                                                                                                               |
+    | css-loader                  | 将css文件变成commonjs模块加载到js中，里面的内容是样式字符串                                                    | 在less-loader、sass-loader使用之后                                                                                                                            |
+    | style-loader                | 创建style标签，将js中的样式资源插入进去，添加到head中                                                           | 需要先使用css-loader                                                                                                                                         |
+    | url-loader                  | 将项目中的图片资源引用加载到js中                                                                              | 依赖file-loader；存在问题：处理不了html中img图片资源引用                                                                                                       |
+    | html-loader                 | 处理html文件的img图片（负责引入img，从而能被url-loader进行处理）                                                 |                                                                                                                                                              |
+    | MiniCssExtractPlugin.loader | 将css从js中抽取出来，存在单独的文件中                                                                          | 需要与css-loader配合使用                                                                                                                                     |
+    | postcss-loader              | 实现css兼容                                                                                                   |                                                                                                                                                              |
+    | postcss-preset-env          | 能够帮助postcss识别某些环境，从而加载package.json中browserslist里面的配置，能够让兼容性精确到某一个浏览器的版本 | 需要配合postcss-loader使用                                                                                                                                   |
+    | eslint-loader               | 配置js的语法限制规则                                                                                          | 1.依赖eslint；2.可以使用airbnb作为规范，依赖eslint-config-airbnb-base或者eslint-config-airbnb                                                                  |
+    | babel-loader                | 对js代码进行兼容性处理                                                                                        | 1.依赖 @babel/core；2.使用 @babel/preset-env 进行基本的兼容性处理；3.使用 @babel/polyfill 进行全部的兼容性处理；4.使用 core-js 进行高级语法的按需加载兼容性处理 |
 
 - 常用的插件
     
@@ -151,3 +152,56 @@
             "extends": "airbnb-base"
         }
         ```
+
+- js 兼容性处理
+
+    使用[babel-loader](https://webpack.docschina.org/loaders/babel-loader/)进行js的兼容性处理
+
+    ```js
+    module: {
+        rules: [
+        /**
+        * js兼容性处理: babel-loader @babel/core
+        *  1. js 基本的兼容性处理 -> @babel/preset-env
+        *    只能转换基本的语法，promise等高级的语法无法转换
+        *  2. js 全部的兼容性处理 -> @babel/polyfill
+        *    引入了所有的兼容性代码，导致遍以后的文件体积很大
+        *  3.按需进行高级语法的兼容性处理 -> core-js （此时不能用@babel/polyfill）
+        */
+        {
+            test: /\.js$/,
+            exclude: /node_modules/,
+            loader: 'babel-loader',
+            options: {
+            // 预设：指示babel做什么样的兼容性处理
+            presets: [
+                [
+                '@babel/preset-env',
+                {
+                    // 按需加载
+                    useBuiltIns: 'usage',
+                    // 指定core-js的版本
+                    corejs: {
+                    version: 3,
+                    },
+                    // 指定兼容性做到浏览器的哪个版本
+                    targets: {
+                    chrome: '60',
+                    firefox: '60',
+                    ie: '9',
+                    safari: '10',
+                    edge: '17',
+                    },
+                },
+                ],
+            ],
+            },
+        },
+        ],
+    },
+    ```
+
+    使用 @babel/polyfill 进行全部的兼容性处理时，在入口文件引入 @babel/polyfill 即可
+    ```js
+    import '@babel/polyfill';
+    ```
