@@ -1,17 +1,17 @@
-const { resolve } = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { resolve } = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: "./src/index.js",
+  entry: './src/index.js',
   output: {
-    filename: "built.js",
-    path: resolve(__dirname, "build"),
+    filename: 'built.js',
+    path: resolve(__dirname, 'build'),
   },
   module: {
     rules: [
       {
         test: /\.css$/,
-        use: ["style-loader", "css-loader"],
+        use: ['style-loader', 'css-loader'],
       },
     ],
   },
@@ -19,8 +19,8 @@ module.exports = {
     // 创建一个空的HTML，自动引入打包输出的所有资源（js/css）
     new HtmlWebpackPlugin({
       // 复制 ./src/index.html 的内容
-      template: "./src/index.html"
-    })
+      template: './src/index.html',
+    }),
   ],
-  mode: "development",
+  mode: 'development',
 };

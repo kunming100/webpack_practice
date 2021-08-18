@@ -3,20 +3,20 @@
  * @author tankm
  * @since 2021-08-11 18:05:02
  */
-const { resolve } = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const { resolve } = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin');
 
 // 设置nodejs的环境变量
-process.env.NODE_ENV = "development";
+process.env.NODE_ENV = 'development';
 
 module.exports = {
-  mode: "development",
-  entry: "./src/js/index.js",
+  mode: 'development',
+  entry: './src/js/index.js',
   output: {
-    filename: "js/built.js",
-    path: resolve(__dirname, "build"),
+    filename: 'js/built.js',
+    path: resolve(__dirname, 'build'),
   },
   module: {
     rules: [
@@ -25,7 +25,7 @@ module.exports = {
         use: [
           // 取代style-loader。作用：提取js中的css成单独文件
           MiniCssExtractPlugin.loader,
-          "css-loader",
+          'css-loader',
           /**
            * css 兼容性处理：postcss
            * 需要用postcss-loader、postcss-preset-env
@@ -49,12 +49,12 @@ module.exports = {
           // 'postcss-loader',
           // 修改loader的配置
           {
-            loader: "postcss-loader",
+            loader: 'postcss-loader',
             options: {
               postcssOptions: {
                 plugins: [
                   // postcss插件
-                  require("postcss-preset-env")(),
+                  require('postcss-preset-env')(),
                 ],
               },
             },
@@ -65,10 +65,10 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "./src/index.html",
+      template: './src/index.html',
     }),
     new MiniCssExtractPlugin({
-      filename: "css/built.css",
+      filename: 'css/built.css',
     }),
     // 压缩css
     new OptimizeCssAssetsWebpackPlugin(),

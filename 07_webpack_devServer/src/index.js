@@ -4,7 +4,7 @@
  * @since 2021-08-06 00:09:53
  */
 
-import "./iconfont.css";
+import './iconfont.css';
 
 function add(a, b) {
   return a + b;

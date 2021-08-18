@@ -8,8 +8,7 @@ module.exports = {
     filename: 'js/built.js',
     path: resolve(__dirname, 'build'),
   },
-  module: {
-  },
+  module: {},
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/index.html',
