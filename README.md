@@ -205,3 +205,40 @@
     ```js
     import '@babel/polyfill';
     ```
+
+## Webpack 性能优化
+
+### `开发环境性能优化`
+    优化打包构建速度
+    优化代码调试
+
+### `生产环境性能优化`
+    优化打包构建速度
+    优化代码运行的性能
+
+1. `HMR`
+    
+    ```js
+    // Hot Module Replacement 热模块替换 / 模块热替换
+    // 作用：一个模块发生变化，只会重新打包该模块，可以极大地提升构建速度。
+    devServer: {
+        contentBase: resolve(__dirname, 'build'),
+        compress: true,
+        port: 3000,
+        open: true,
+        // 开启HMR功能
+        hot: true,
+    },
+    ```
+
+    - 样式文件：可以使用HMR功能，因为style-loader内部实现了HMR
+
+    - js 文件：默认不能使用HMR功能，需要修改 js 代码才能支持。
+
+        注意：HMR功能对于 js 的处理，只能用于非入口文件。
+    
+    - Html 文件：默认不能使用HMR功能。在devServer中开启HMR时，会导致 html 文件不能热更新了（并且，单页面应用只有一个html文件，所以不用做HMR功能）
+        ```js
+        // 在 entry 中将 html 文件引入，开启 html 文件 HMR
+        entry: ['./src/js/index.js', './src/index.html'],
+        ```
