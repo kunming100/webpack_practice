@@ -242,3 +242,53 @@
         // 在 entry 中将 html 文件引入，开启 html 文件 HMR
         entry: ['./src/js/index.js', './src/index.html'],
         ```
+
+2. `source-map`
+
+    `source-map` 是一种提供源代码映射到构建后的代码的技术
+
+    devtool的取值：[`inline-`|`hidden-`|`eval-`][`nosources-`][`cheap-`[`module-`]]`source-map`
+
+    ```js
+    // 开启source-map
+    devtool: 'eval-source-map',
+    ```
+    
+    - 构建方式
+        * 内联构建：没有生成额外的文件，速度更快
+        * 外部构建：在外部生成了文件
+
+    - 模式特点
+
+        | 模式                    | 特点                                                                                                  | 构建方式 |
+        |:------------------------|:----------------------------------------------------------------------------------------------------|:-------|
+        | source-map              | 输出错误代码准确信息和标明源代码的错误位置                                                            | 外部     |
+        | inline-source-map       | 只生成一个内联 source-map 文件；<br>输出错误代码准确信息和标明源代码的错误位置；                        | 内联     |
+        | eval-source-map         | 每一个文件都生成对应的source-map，用eval包裹解析；<br>输出错误代码准确信息和标明源代码的错误位置；       | 内联     |
+        | hidden-source-map       | 指出错误代码和错误原因，但是没有指明源码的错误位置，所以难以追中源码的错误，只能知道构建后代码的错误位置 | 外部     |
+        | nosources-source-map    | 输出错误位置和错误原因，但是没有任何源代码信息                                                         | 外部     |
+        | cheap-source-map        | 输出错误代码准确信息和标明源代码的错误位置；<br>只能精确到行；                                          | 外部     |
+        | cheap-module-source-map | 输出错误代码准确信息和标明源代码的错误位置；<br>会将loader的source-map也加入到source-map；              | 外部     |
+    
+    - 环境选择
+
+        * 开发环境：速度快、调试更友好 -->  `eval-source-map` / `eval-cheap-module-source-map`
+            
+            - 速度（eval > inline > cheap > ……）
+                * eval-cheap-source-map
+                * eval-source-map
+
+            - 调试友好
+                * source-map
+                * cheap-module-source-map
+                * cheap-source-map
+    
+    
+    
+        * 生产环境：源代码要不要隐藏？调试是否要更友好？ -->  `source-map` / `cheap-module-source-map`
+            
+            内联会使文件体积很大，所以生产环境不用内联
+            - nosources-source-map
+            - hidden-source-map
+    
+    
