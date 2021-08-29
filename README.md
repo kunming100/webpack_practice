@@ -291,4 +291,26 @@
             - nosources-source-map
             - hidden-source-map
     
-    
+3. `oneof`
+```js
+module: {
+    rules: [
+        // 若存再多个loader配置，处理同一种类型的文件，则需要将这些loader配置提到这里。若都在oneof中，只会执行一个loader。
+        {
+            // 以下loader只会匹配一个
+            // 注意：处理同一种类型文件的loader不能同时存在在rules中
+            oneof: [
+                // 处理各种文件的loader
+                {
+                    test: /\.css$/,
+                    use: [...commonCssLoaders],
+                },
+                {
+                    test: /\.less$/,
+                    use: [...commonCssLoaders, 'less-loader'],
+                },
+            ],
+        },
+    ]
+}
+```
