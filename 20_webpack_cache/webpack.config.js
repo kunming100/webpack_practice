@@ -28,13 +28,26 @@ const commonCssLoaders = [
   },
 ];
 
+/**
+ * 缓存
+ *  babel缓存：非第一次构建，会读取之前的缓存
+ *    cacheDirectory: true
+ *  文件资源缓存
+ *    hash：每次webpack构建时会生成一个唯一的hash值
+ *      存在问题：因为js和css同时使用一个hash值，所以如果重新打包，会导致所有缓存失效。
+ *    chunkhash：根据chunk生成的hash值。如果打包来源于同一个chunk，那么hash值就一样。
+ *      存在问题：因为css是在js中引入的，所以同属于一个chunk，所以chunkhash一样
+ *    contenthash：根据文件的内容生成hash，不同的文件的hash值不一样，内容修改，hash就会变化
+ */
+
 module.exports = {
   mode: 'production',
   entry: './src/js/index.js',
   output: {
-    filename: 'js/built.js',
+    filename: 'js/built.[contenthash:10].js',
     path: resolve(__dirname, 'build'),
   },
+  devtool: 'source-map',
   // 正常来讲，一个loader只能被一个loader处理
   // 当一个文件要被多个loader处理，一定要指定loader执行的先后顺序
   //  例如js文件，先执行eslint，在执行babel
@@ -89,6 +102,8 @@ module.exports = {
                   },
                 ],
               ],
+              // 开启babel缓存，非第一次构建，会读取之前的缓存
+              cacheDirectory: true,
             },
           },
           {
@@ -133,7 +148,7 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: 'css/built.css',
+      filename: 'css/built.[contenthash:10].css',
     }),
     new OptimizeCssAssetsWebpackPlugin(),
     new HtmlWebpackPlugin({
